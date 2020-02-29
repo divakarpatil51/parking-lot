@@ -13,4 +13,4 @@
 1.  Single-threaded application.
 2.  User parks in the allocated slot only.
 3.  User does not lose his/her ticket. 
-4.  One hour charge will be added to the parking charge if time crosses the hour mark i.e if user parks for 3 hours and 10 minutes he/she will be charged for 4 hours. 
+4.  One hour charge will be added to the parking charge if time crosses the hour mark i.e if user parks for 3 hours and 10 minutes he/she will be charged for 4 hours.
