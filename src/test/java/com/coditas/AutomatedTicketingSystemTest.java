@@ -22,18 +22,6 @@ public class AutomatedTicketingSystemTest {
 	}
 
 	/**
-	 * Tests the app behavior in case of empty input file.
-	 */
-	@Test()
-	public void testEmptyInputFile() {
-		String fileName = AutomatedTicketingSystemTest.this.getClass()
-				.getResource("/parking_lot_file_inputs_invalid.txt").getFile();
-		assertThrows(InvalidFileException.class, () -> {
-			AutomatedTicketingSystem.main(new String[] { fileName });
-		}, () -> AutomatedTicketingSystem.INVALID_FILE_CONTENTS);
-	}
-
-	/**
 	 * Tests the app behavior in case of invalid input file extension.
 	 */
 	@Test

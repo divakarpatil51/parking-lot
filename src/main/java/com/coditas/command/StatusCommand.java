@@ -1,7 +1,11 @@
 package com.coditas.command;
 
+import com.coditas.exception.IllformedCommandException;
 import com.coditas.parking.ParkingLotManager;
 
+/**
+ * Class to handle status command.
+ */
 public class StatusCommand implements Command {
 
 	private ParkingLotManager parkingLotManager;
@@ -11,7 +15,10 @@ public class StatusCommand implements Command {
 	}
 
 	@Override
-	public void execute(Object[] data) {
+	public void execute(String[] params) {
+		if (!areCommandParamsLengthValid(params, 1)) {
+			throw new IllformedCommandException("Invalid number of params for status command");
+		}
 		parkingLotManager.printStatus();
 	}
 
