@@ -1,25 +1,35 @@
 package com.coditas.command;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * The Interface Command.
+ * The Enum Command.
  */
-public interface Command {
+public enum Command {
 
-	/**
-	 * Executes the command.
-	 *
-	 * @param parameters the command parameters
-	 */
-	public void execute(String[] parameters);
+	CREATE_PARKING_LOT("create_parking_lot"), LEAVE("leave"), PARK("park"), STATUS("status");
 
-	/**
-	 * Verifies whether the parameters passed to a command are of expected length.
-	 *
-	 * @param parameters   the parameters
-	 * @param expectedSize the expected size
-	 * @return true, if parameters list is of expected size.
-	 */
-	public default boolean areCommandParamsLengthValid(String[] parameters, int expectedSize) {
-		return parameters != null && parameters.length == expectedSize;
+	private String commandString;
+
+	private static Map<String, Command> commands = new HashMap<>(4);
+
+	static {
+		for (Command command : values()) {
+			commands.put(command.commandString, command);
+		}
 	}
+
+	private Command(String commandString) {
+		this.commandString = commandString;
+	}
+
+	public String getCommandString() {
+		return commandString;
+	}
+
+	public static Command get(String commandString) {
+		return commands.get(commandString);
+	}
+
 }

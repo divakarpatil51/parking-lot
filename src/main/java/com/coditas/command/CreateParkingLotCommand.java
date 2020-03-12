@@ -1,26 +1,31 @@
 package com.coditas.command;
 
-import com.coditas.exception.IllformedCommandException;
 import com.coditas.parking.ParkingLotManager;
 
 /**
  * Class to handle create_parking_lot command.
  */
-public class CreateParkingLotCommand implements Command {
-
-	private ParkingLotManager parkingLotManager;
+public class CreateParkingLotCommand extends AbstractCommand {
 
 	public CreateParkingLotCommand(ParkingLotManager manager) {
-		this.parkingLotManager = manager;
+		super(manager);
 	}
 
 	@Override
-	public void execute(String[] params) {
-		if (!areCommandParamsLengthValid(params, 2)) {
-			throw new IllformedCommandException("Invalid number of params for create_parking_lot command");
-		}
-
-		parkingLotManager.createParkingLot(Integer.valueOf(params[1]));
+	public void execute(CommandParameters params) {
+		validateParameters(params.getParameters());
+		int parkingSize = Integer.parseInt(params.nextParam());
+		parkingLotManager.createParkingLot(parkingSize);
+		logger.log(String.format("Created parking lot with %d slots", parkingSize));
 	}
 
+	@Override
+	protected int allowedParamsLength() {
+		return 1;
+	}
+
+	@Override
+	protected String name() {
+		return "Create Parking Lot command";
+	}
 }

@@ -1,29 +1,45 @@
 package com.coditas.command;
 
-import com.coditas.exception.CommandNotFoundException;
-import com.coditas.parking.ParkingLotManager;
+import java.util.EnumMap;
+import java.util.Map;
+
+import com.coditas.log.LogFactory;
+import com.coditas.log.Logger;
 
 /**
- * A factory for creating {@code Command} objects.
+ * A factory for creating {@link AbstractCommand} objects.
  */
-public class CommandFactory {
+public final class CommandFactory {
+
+	private static Map<Command, AbstractCommand> commands = new EnumMap<>(Command.class);
+	private static final Logger LOGGER = LogFactory.getLogger();
 
 	private CommandFactory() {
 	}
 
-	public static Command getCommand(String command, ParkingLotManager manager) {
-		switch (command) {
-		case "create_parking_lot":
-			return new CreateParkingLotCommand(manager);
-		case "park":
-			return new ParkCommand(manager);
-		case "leave":
-			return new LeaveCommand(manager);
-		case "status":
-			return new StatusCommand(manager);
-		default:
-			throw new CommandNotFoundException("Please provide valid command");
-		}
+	/**
+	 * Adds the command.
+	 *
+	 * @param commandString the command string
+	 * @param command       the {@link AbstractCommand} object
+	 */
+	public static void addCommand(Command commandValue, AbstractCommand command) {
+		commands.put(commandValue, command);
+	}
 
+	/**
+	 * Gets the command as per command string.
+	 *
+	 * @param params the params
+	 * @return the command
+	 */
+	public static AbstractCommand getCommand(CommandParameters params) {
+		Command command = params.getCommand();
+		if (commands.containsKey(command)) {
+			return commands.get(command);
+		}
+		LOGGER.error("Please enter valid command");
+		// For ill formed command, showing status of parking
+		return commands.get(Command.STATUS);
 	}
 }

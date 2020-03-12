@@ -1,25 +1,44 @@
 package com.coditas.command;
 
-import com.coditas.exception.IllformedCommandException;
+import com.coditas.exception.InvalidInputException;
+import com.coditas.model.VehicleDetails;
 import com.coditas.parking.ParkingLotManager;
 
 /**
  * Class to handle park command.
  */
-public class ParkCommand implements Command {
-
-	private ParkingLotManager parkingLotManager;
+public class ParkCommand extends AbstractCommand {
 
 	public ParkCommand(ParkingLotManager manager) {
-		this.parkingLotManager = manager;
+		super(manager);
 	}
 
 	@Override
-	public void execute(String[] params) {
-		if (!areCommandParamsLengthValid(params, 2)) {
-			throw new IllformedCommandException("Invalid number of params for park command");
+	public void execute(CommandParameters params) {
+		validateParameters(params.getParameters());
+		VehicleDetails carData = new VehicleDetails();
+		carData.setRegistrationNumber(params.nextParam());
+		try {
+			int slotNumber = parkingLotManager.allocateParkingSlot(carData);
+			if (slotNumber == -1) {
+				logger.log("Sorry, parking lot is full");
+			} else {
+				logger.log(String.format("Allocated slot number: %d", slotNumber));
+			}
+		} catch (InvalidInputException ex) {
+			logger.error(ex.getMessage());
 		}
-		parkingLotManager.allocateParkingSlot(params);
+
+	}
+
+	@Override
+	protected int allowedParamsLength() {
+		return 1;
+	}
+
+	@Override
+	protected String name() {
+		return "Park command";
 	}
 
 }

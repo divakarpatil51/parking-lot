@@ -1,13 +1,12 @@
-package com.coditas.car;
+package com.coditas.model;
 
 /**
- * Class to hold Car metadata.
+ * Class to hold Vehicle metadata.
  */
-public class CarMetadata {
+public class VehicleDetails {
 
 	private String registrationNumber;
 	private String color;
-	private int slotNumber;
 
 	public String getRegistrationNumber() {
 		return registrationNumber;
@@ -23,19 +22,6 @@ public class CarMetadata {
 
 	public void setColor(String color) {
 		this.color = color;
-	}
-
-	public int getSlotNumber() {
-		return slotNumber;
-	}
-
-	public void setSlotNumber(int slotNumber) {
-		this.slotNumber = slotNumber;
-	}
-
-	@Override
-	public String toString() {
-		return slotNumber + "\t" + registrationNumber;
 	}
 
 }

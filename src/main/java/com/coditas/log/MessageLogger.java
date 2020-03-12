@@ -10,4 +10,9 @@ public class MessageLogger implements Logger {
 		System.out.println(message);
 	}
 
+	@Override
+	public void error(String message) {
+		
+	}
+
 }

@@ -1,25 +1,29 @@
 package com.coditas.command;
 
-import com.coditas.exception.IllformedCommandException;
 import com.coditas.parking.ParkingLotManager;
 
 /**
  * Class to handle status command.
  */
-public class StatusCommand implements Command {
-
-	private ParkingLotManager parkingLotManager;
+public class StatusCommand extends AbstractCommand {
 
 	public StatusCommand(ParkingLotManager manager) {
-		this.parkingLotManager = manager;
+		super(manager);
 	}
 
 	@Override
-	public void execute(String[] params) {
-		if (!areCommandParamsLengthValid(params, 1)) {
-			throw new IllformedCommandException("Invalid number of params for status command");
-		}
+	public void execute(CommandParameters params) {
 		parkingLotManager.printStatus();
+	}
+
+	@Override
+	protected int allowedParamsLength() {
+		return 0;
+	}
+
+	@Override
+	protected String name() {
+		return "Status command";
 	}
 
 }

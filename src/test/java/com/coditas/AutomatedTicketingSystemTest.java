@@ -1,8 +1,8 @@
 package com.coditas;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.Test;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.coditas.exception.InvalidFileException;
 
@@ -10,6 +10,9 @@ import com.coditas.exception.InvalidFileException;
  * The Class AutomatedTicketingSystemTest.
  */
 public class AutomatedTicketingSystemTest {
+
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
 
 	/**
 	 * Tests whether the input file has valid data.
@@ -26,19 +29,19 @@ public class AutomatedTicketingSystemTest {
 	 */
 	@Test
 	public void testInvalidInputFileExtension() {
-		assertThrows(InvalidFileException.class, () -> {
-			AutomatedTicketingSystem.main(new String[] { "parking_lot_file_inputs_invalid" });
-		}, () -> AutomatedTicketingSystem.INVALID_FILE_FORMAT);
+		expectedException.expect(InvalidFileException.class);
+		expectedException.expectMessage(AutomatedTicketingSystem.INVALID_FILE_FORMAT);
+		AutomatedTicketingSystem.main(new String[] { "parking_lot_file_inputs_invalid" });
 	}
-	
+
 	/**
 	 * Tests the app behavior in case of invalid parameters passed at runtime.
 	 */
-	@Test()
+	@Test
 	public void testInvalidParameters() {
-		assertThrows(InvalidFileException.class, () -> {
-			AutomatedTicketingSystem.main(new String[] { "parking_lot_file_inputs_invalid", "test" });
-		}, () -> AutomatedTicketingSystem.INVALID_ARGUMENT_LIST);
+		expectedException.expect(InvalidFileException.class);
+		expectedException.expectMessage(AutomatedTicketingSystem.INVALID_ARGUMENT_LIST);
+		AutomatedTicketingSystem.main(new String[] {});
 	}
 
 }

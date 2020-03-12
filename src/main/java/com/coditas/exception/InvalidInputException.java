@@ -1,7 +1,7 @@
 package com.coditas.exception;
 
 /**
- * Exception thrown in case of invalid inputs.
+ * Signals that the input present in the file is invalid
  */
 public class InvalidInputException extends RuntimeException {
 

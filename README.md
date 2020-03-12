@@ -1,4 +1,3 @@
-
 <h1><b>Parking Lot Ticketing System</b></h1>
 
 <b>Requirements</b>:
@@ -10,7 +9,11 @@
    
 <b>Assumptions</b>:
 
-1.  Single-threaded application.
-2.  User parks in the allocated slot only.
-3.  User does not lose his/her ticket. 
-4.  One hour charge will be added to the parking charge if time crosses the hour mark i.e if user parks for 3 hours and 10 minutes he/she will be charged for 4 hours.
+1.  User parks in the allocated slot only.
+2.  User does not lose his/her ticket.  
+3. One hour charge will be added to the parking charge if time crosses the hour mark i.e if user parks for 3 hours and 10 minutes he/she will be charged for 4 hours.
+
+<b>Steps to run application:</b>
+
+1.  mvn clean install
+2.  java -jar target/AutomatedParkingTicketingSystem-0.0.1-SNAPSHOT.jar complete-path-to-file

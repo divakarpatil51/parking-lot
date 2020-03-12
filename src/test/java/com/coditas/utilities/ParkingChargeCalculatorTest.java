@@ -1,8 +1,8 @@
 package com.coditas.utilities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * Test cases for {@code ParkingChargeCalculator} class.

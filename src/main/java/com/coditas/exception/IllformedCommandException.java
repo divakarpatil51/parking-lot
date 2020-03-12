@@ -1,7 +1,7 @@
 package com.coditas.exception;
 
 /**
- * Exception thrown in case of ill-formed command is found.
+ * Signals that the command format is not as expected
  */
 public class IllformedCommandException extends RuntimeException {
 

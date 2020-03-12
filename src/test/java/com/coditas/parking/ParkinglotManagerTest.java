@@ -1,46 +1,59 @@
 package com.coditas.parking;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
+import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import com.coditas.exception.InvalidInputException;
+import com.coditas.log.Logger;
+import com.coditas.model.VehicleDetails;
+import com.coditas.model.VehicleLeaveResponse;
 
 /**
  * The Class ParkinglotManagerTest.
  */
 public class ParkinglotManagerTest {
 
-	private ParkingLotManager manager = new ParkingLotManager();
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
 
-	private static final PrintStream sysOut = System.out;
-	private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	private static final String REGISTRATION_NUMBER = "MH-01-EE-1111";
 
-	@BeforeAll
-	public static void init() throws UnsupportedEncodingException {
-		System.setOut(new PrintStream(outContent, true, "UTF-8"));
-	}
+	@InjectMocks
+	private ParkingLotManagerImpl manager;
 
-	@BeforeEach
-	public void initBeforeEach() {
-		outContent.reset();
+	@Mock
+	private Logger logger;
+
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
 	}
 
 	/**
 	 * Test parking slot creation success scenario.
+	 * 
+	 * @throws IOException
 	 */
 	@Test
-	public void testParkingSlotCreationSuccess() {
+	public void testParkingSlotCreationSuccess() throws IOException {
 		manager.createParkingLot(6);
-		assertEquals("Created parking lot with 6 slots\r\n", outContent.toString());
+		assertEquals(6, manager.getCarMetadata().length);
 	}
 
 	/**
@@ -48,8 +61,9 @@ public class ParkinglotManagerTest {
 	 */
 	@Test
 	public void testParkingSlotCreationFailure() {
-		assertThrows(InvalidInputException.class, () -> manager.createParkingLot(0),
-				() -> "Please provide valid size for the parking lot");
+		expectedException.expect(InvalidInputException.class);
+		expectedException.expectMessage("Please provide valid size for the parking lot");
+		manager.createParkingLot(0);
 	}
 
 	/**
@@ -58,9 +72,10 @@ public class ParkinglotManagerTest {
 	@Test
 	public void testParkingSlotAllocation() {
 		manager.createParkingLot(1);
-		outContent.reset();
-		manager.allocateParkingSlot(new String[] { "park", "MH-01-EE-1111" });
-		assertEquals("Allocated slot number: 1\r\n", outContent.toString());
+		manager.allocateParkingSlot(createCarData());
+
+		assertNotNull(manager.getCarMetadata());
+		assertEquals(REGISTRATION_NUMBER, manager.getCarMetadata()[0].getParkedVehicleDetails().getRegistrationNumber());
 	}
 
 	/**
@@ -69,10 +84,9 @@ public class ParkinglotManagerTest {
 	@Test
 	public void testParkingSlotAllocationIfParkingIsFull() {
 		manager.createParkingLot(1);
-		manager.allocateParkingSlot(new String[] { "park", "MH-01-EE-1111" });
-		outContent.reset();
-		manager.allocateParkingSlot(new String[] { "park", "MH-01-EE-1112" });
-		assertEquals("Sorry, parking lot is full\r\n", outContent.toString());
+		VehicleDetails carData = createCarData();
+		manager.allocateParkingSlot(carData);
+		assertEquals(-1, manager.allocateParkingSlot(carData));
 	}
 
 	/**
@@ -80,9 +94,9 @@ public class ParkinglotManagerTest {
 	 */
 	@Test
 	public void testParkingSlotAllocationFailure() {
-		assertThrows(InvalidInputException.class,
-				() -> manager.allocateParkingSlot(new String[] { "park", "MH-01-EE-1111" }),
-				() -> "Please create parking lot first with command: create_parking_lot <size>");
+		expectedException.expect(InvalidInputException.class);
+		expectedException.expectMessage("Please create parking lot first with command: create_parking_lot <size>");
+		manager.allocateParkingSlot(createCarData());
 	}
 
 	/**
@@ -91,12 +105,11 @@ public class ParkinglotManagerTest {
 	@Test
 	public void testParkingSlotDeallocation() {
 		manager.createParkingLot(1);
-		manager.allocateParkingSlot(new String[] { "park", "MH-01-EE-1111" });
-		outContent.reset();
+		manager.allocateParkingSlot(createCarData());
+		Optional<VehicleLeaveResponse> carData = manager.leaveParkingSlot(REGISTRATION_NUMBER, 4);
 
-		manager.leaveParkingSlot(new String[] { "leave", "MH-01-EE-1111", "4" });
-		assertEquals("Registration number MH-01-EE-1111 with Slot Number 1 is free with Charge 30\r\n",
-				outContent.toString());
+		assertTrue(carData.isPresent());
+		assertEquals(1, carData.get().getSlotNumber());
 	}
 
 	/**
@@ -105,10 +118,8 @@ public class ParkinglotManagerTest {
 	@Test
 	public void testParkingSlotDeallocationForInvalidCarDetails() {
 		manager.createParkingLot(1);
-		outContent.reset();
-
-		manager.leaveParkingSlot(new String[] { "leave", "MH-01-EE-1112", "4" });
-		assertEquals("Registration number MH-01-EE-1112 not found\r\n", outContent.toString());
+		Optional<VehicleLeaveResponse> carData = manager.leaveParkingSlot(REGISTRATION_NUMBER, 4);
+		assertFalse(carData.isPresent());
 	}
 
 	/**
@@ -116,16 +127,17 @@ public class ParkinglotManagerTest {
 	 */
 	@Test
 	public void testParkingSlotCurrentStatus() {
+		ParkingLotManagerImpl.setLogger(logger);
 		manager.createParkingLot(1);
-		manager.allocateParkingSlot(new String[] { "park", "MH-01-EE-1111" });
-		outContent.reset();
-
+		manager.allocateParkingSlot(createCarData());
 		manager.printStatus();
-		assertEquals("Slot No. Registration No.\r\n" + "1	MH-01-EE-1111\r\n", outContent.toString());
+		verify(logger, times(2)).log(Mockito.anyString());
 	}
 
-	@AfterAll
-	public static void destroy() {
-		System.setOut(sysOut);
+	private VehicleDetails createCarData() {
+		VehicleDetails carData = new VehicleDetails();
+		carData.setRegistrationNumber(REGISTRATION_NUMBER);
+		return carData;
 	}
+
 }
