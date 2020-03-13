@@ -29,8 +29,6 @@ public class AutomatedTicketingSystem {
 
 	public static void main(String[] args) {
 
-		// TODO: Remove below line once testing is completed.
-		//args[0] = AutomatedTicketingSystem.class.getResource("/parking_lot_file_inputs.txt").getFile();
 		validateArguments(args);
 
 		try (BufferedReader reader = new BufferedReader(

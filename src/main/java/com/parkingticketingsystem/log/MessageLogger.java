@@ -12,7 +12,7 @@ public class MessageLogger implements Logger {
 
 	@Override
 	public void error(String message) {
-		
+		System.err.println(message);
 	}
 
 }
