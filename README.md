@@ -15,5 +15,5 @@
 
 <b>Steps to run application:</b>
 
-1.  mvn clean install
+1.  mvn clean package
 2.  java -jar target/AutomatedParkingTicketingSystem-0.0.1-SNAPSHOT.jar complete-path-to-file
