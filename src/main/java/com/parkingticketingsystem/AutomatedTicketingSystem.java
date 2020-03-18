@@ -46,7 +46,6 @@ public class AutomatedTicketingSystem {
 	 * @param line the line
 	 */
 	private static void findAndExecCommand(String line) {
-		//TODO: Check how to improve below code
 		CommandParameters parameters = new CommandParameters(line.split(SEPARATOR_REGEX));
 		AbstractCommand command = CommandFactory.getCommand(parameters);
 		command.execute(parameters);
