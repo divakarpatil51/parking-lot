@@ -16,7 +16,11 @@ public class LeaveCommand extends AbstractCommand {
 
 	@Override
 	public void execute(CommandParameters params) {
-		validateParameters(params.getParameters());
+		boolean isValid = isParameterLengthValid(params.getParameters());
+		if (!isValid) {
+			logger.error(String.format("Invalid params for the %s", name()));
+			return;
+		}
 		String registrationNumber = params.nextParam();
 		int timeSpent = Integer.parseInt(params.nextParam());
 		Optional<VehicleLeaveResponse> vehicle = parkingLotManager.leaveParkingSlot(registrationNumber, timeSpent);

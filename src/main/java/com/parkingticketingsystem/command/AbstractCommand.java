@@ -1,6 +1,5 @@
 package com.parkingticketingsystem.command;
 
-import com.parkingticketingsystem.exception.IllformedCommandException;
 import com.parkingticketingsystem.log.LogFactory;
 import com.parkingticketingsystem.log.Logger;
 import com.parkingticketingsystem.parking.ParkingLotManager;
@@ -31,10 +30,8 @@ public abstract class AbstractCommand {
 	 * @param expectedSize the expected size
 	 * @return true, if parameters list is of expected size.
 	 */
-	protected void validateParameters(String[] parameters) {
-		if(parameters == null || parameters.length != allowedParamsLength()) {
-			throw new IllformedCommandException("Invalid number of params for " + name());
-		}
+	protected boolean isParameterLengthValid(String[] parameters) {
+		return parameters != null && parameters.length == allowedParamsLength();
 	}
 
 	/**

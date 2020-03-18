@@ -15,7 +15,11 @@ public class ParkCommand extends AbstractCommand {
 
 	@Override
 	public void execute(CommandParameters params) {
-		validateParameters(params.getParameters());
+		boolean isValid = isParameterLengthValid(params.getParameters());
+		if (!isValid) {
+			logger.error(String.format("Invalid params for the %s", name()));
+			return;
+		}
 		VehicleDetails carData = new VehicleDetails();
 		carData.setRegistrationNumber(params.nextParam());
 		try {
