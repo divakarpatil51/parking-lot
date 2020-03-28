@@ -11,6 +11,7 @@ public abstract class AbstractCommand {
 
 	protected static final Logger logger = LogFactory.getLogger();
 	protected ParkingLotManager parkingLotManager;
+	protected CommandParameters params;
 
 	public AbstractCommand(ParkingLotManager manager) {
 		this.parkingLotManager = manager;
@@ -19,9 +20,8 @@ public abstract class AbstractCommand {
 	/**
 	 * Executes the command.
 	 *
-	 * @param parameters the command parameters
 	 */
-	public abstract void execute(CommandParameters parameters);
+	public abstract void execute();
 
 	/**
 	 * Verifies whether the parameters passed to a command are of expected length.
@@ -47,4 +47,8 @@ public abstract class AbstractCommand {
 	 * @return the command string
 	 */
 	protected abstract String name();
+
+	public void setCommandParameters(CommandParameters params) {
+		this.params = params;
+	}
 }

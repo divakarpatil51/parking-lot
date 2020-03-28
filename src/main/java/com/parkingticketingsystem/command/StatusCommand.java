@@ -12,7 +12,7 @@ public class StatusCommand extends AbstractCommand {
 	}
 
 	@Override
-	public void execute(CommandParameters params) {
+	public void execute() {
 		parkingLotManager.printStatus();
 	}
 

@@ -12,7 +12,7 @@ public class CreateParkingLotCommand extends AbstractCommand {
 	}
 
 	@Override
-	public void execute(CommandParameters params) {
+	public void execute() {
 		boolean isValid = isParameterLengthValid(params.getParameters());
 		if (!isValid) {
 			logger.error(String.format("Invalid params for the %s", name()));

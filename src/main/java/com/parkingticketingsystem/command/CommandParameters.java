@@ -5,14 +5,16 @@ import java.util.Arrays;
 /**
  * The Class CommandParameters.
  */
-//TODO: Find good name
 public class CommandParameters {
+
+	private static final String SEPARATOR_REGEX = " ";
 
 	private Command command;
 	private String[] parameters;
 	private int currentIndex;
 
-	public CommandParameters(String[] commandParams) {
+	public CommandParameters(String commandLine) {
+		String[] commandParams = commandLine.split(SEPARATOR_REGEX);
 		this.command = Command.get(commandParams[0]);
 		if (commandParams.length > 1) {
 			parameters = Arrays.copyOfRange(commandParams, 1, commandParams.length);
