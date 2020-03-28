@@ -132,7 +132,7 @@ public class ParkinglotManagerTest {
 		manager.createParkingLot(1);
 		manager.allocateParkingSlot(createCarData());
 		manager.printStatus();
-		verify(logger, times(2)).info(Mockito.anyString());
+		verify(logger, times(1)).info(Mockito.anyString());
 	}
 
 	private VehicleDetails createCarData() {
