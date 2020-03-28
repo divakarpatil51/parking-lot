@@ -68,7 +68,7 @@ public class ParkingLotManagerImpl implements ParkingLotManager {
 
 		int freedSlot = vehicleSlot.get().getSlotNumber();
 		slots[freedSlot - 1].unparkVehicle();
-		
+
 		int charge = ParkingChargeCalculator.calculateCharge(timeSpent);
 		VehicleLeaveResponse response = new VehicleLeaveResponse();
 		response.setParkingCharge(charge);
@@ -80,9 +80,9 @@ public class ParkingLotManagerImpl implements ParkingLotManager {
 	@Override
 	public void printStatus() {
 		validateSlotsStatus();
-		logger.log("Slot No. Registration No.");
-		Arrays.stream(slots).filter(slot -> !slot.isSlotFree()).forEach(car -> logger.log(
-				String.format("%d\t%s", car.getSlotNumber(), car.getParkedVehicleDetails().getRegistrationNumber())));
+		logger.info("Slot No. Registration No.");
+		Arrays.stream(slots).filter(slot -> !slot.isSlotFree()).forEach(car -> logger.info("%d\t%s",
+				car.getSlotNumber(), car.getParkedVehicleDetails().getRegistrationNumber()));
 	}
 
 	/**

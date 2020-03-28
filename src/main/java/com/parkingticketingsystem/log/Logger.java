@@ -8,10 +8,16 @@ public interface Logger {
 	/**
 	 * Logs a message with info log level.
 	 *
-	 * @param message log this message
+	 * @param message   log this message
+	 * @param arguments arguments
 	 */
-	void log(String message);
-	
-	void error(String message);
+	void info(String message, Object... arguments);
 
+	/**
+	 * Logs a message with error log level.
+	 *
+	 * @param message log this message
+	 * @param arguments arguments
+	 */
+	void error(String message, Object... arguments);
 }

@@ -15,12 +15,12 @@ public class CreateParkingLotCommand extends AbstractCommand {
 	public void execute() {
 		boolean isValid = isParameterLengthValid(params.getParameters());
 		if (!isValid) {
-			logger.error(String.format("Invalid params for the %s", name()));
+			logger.error("Invalid params for the %s", name());
 			return;
 		}
 		int parkingSize = Integer.parseInt(params.nextParam());
 		parkingLotManager.createParkingLot(parkingSize);
-		logger.log(String.format("Created parking lot with %d slots", parkingSize));
+		logger.info("Created parking lot with %d slots", parkingSize);
 	}
 
 	@Override

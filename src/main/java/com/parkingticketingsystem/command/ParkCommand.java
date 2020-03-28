@@ -17,7 +17,7 @@ public class ParkCommand extends AbstractCommand {
 	public void execute() {
 		boolean isValid = isParameterLengthValid(params.getParameters());
 		if (!isValid) {
-			logger.error(String.format("Invalid params for the %s", name()));
+			logger.error("Invalid params for the %s", name());
 			return;
 		}
 		VehicleDetails carData = new VehicleDetails();
@@ -25,9 +25,9 @@ public class ParkCommand extends AbstractCommand {
 		try {
 			int slotNumber = parkingLotManager.allocateParkingSlot(carData);
 			if (slotNumber == -1) {
-				logger.log("Sorry, parking lot is full");
+				logger.info("Sorry, parking lot is full");
 			} else {
-				logger.log(String.format("Allocated slot number: %d", slotNumber));
+				logger.info("Allocated slot number: %d", slotNumber);
 			}
 		} catch (InvalidInputException ex) {
 			logger.error(ex.getMessage());

@@ -13,7 +13,7 @@ public abstract class AbstractCommand {
 	protected ParkingLotManager parkingLotManager;
 	protected CommandParameters params;
 
-	public AbstractCommand(ParkingLotManager manager) {
+	AbstractCommand(ParkingLotManager manager) {
 		this.parkingLotManager = manager;
 	}
 

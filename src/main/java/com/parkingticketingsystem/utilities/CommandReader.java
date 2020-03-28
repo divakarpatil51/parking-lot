@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Optional;
 
 import com.parkingticketingsystem.command.AbstractCommand;
 import com.parkingticketingsystem.command.CommandFactory;
@@ -31,14 +32,14 @@ public class CommandReader {
 	 * 
 	 * @return the next command.
 	 */
-	public AbstractCommand getNextCommand() {
+	public Optional<AbstractCommand> getNextCommand() {
 		try {
 			String nextCommand = reader.readLine();
 			if (nextCommand == null) {
-				return null;
+				return Optional.empty();
 			}
 			CommandParameters parameters = new CommandParameters(nextCommand);
-			return CommandFactory.getCommand(parameters);
+			return Optional.of(CommandFactory.getCommand(parameters));
 		} catch (IOException e) {
 			return null;
 		}

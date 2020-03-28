@@ -18,18 +18,20 @@ public class LeaveCommand extends AbstractCommand {
 	public void execute() {
 		boolean isValid = isParameterLengthValid(params.getParameters());
 		if (!isValid) {
-			logger.error(String.format("Invalid params for the %s", name()));
+			logger.error("Invalid params for the %s", name());
 			return;
 		}
 		String registrationNumber = params.nextParam();
 		int timeSpent = Integer.parseInt(params.nextParam());
-		Optional<VehicleLeaveResponse> vehicle = parkingLotManager.leaveParkingSlot(registrationNumber, timeSpent);
+		Optional<VehicleLeaveResponse> vehicle = parkingLotManager
+				.leaveParkingSlot(registrationNumber, timeSpent);
 
 		if (vehicle.isPresent()) {
-			logger.log(String.format("Registration number  %s with Slot Number %d is free with Charge %d",
-					registrationNumber, vehicle.get().getSlotNumber(), vehicle.get().getParkingCharge()));
+			logger.info("Registration number  %s with Slot Number %d is free with Charge %d",
+					registrationNumber, vehicle.get().getSlotNumber(),
+					vehicle.get().getParkingCharge());
 		} else {
-			logger.log(String.format("Registration number %s not found", registrationNumber));
+			logger.info("Registration number %s not found", registrationNumber);
 		}
 
 	}
@@ -38,7 +40,7 @@ public class LeaveCommand extends AbstractCommand {
 	protected int allowedParamsLength() {
 		return 2;
 	}
-	
+
 	@Override
 	protected String name() {
 		return "Leave command";

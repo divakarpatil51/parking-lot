@@ -13,8 +13,8 @@ public class CommandParameters {
 	private String[] parameters;
 	private int currentIndex;
 
-	public CommandParameters(String commandLine) {
-		String[] commandParams = commandLine.split(SEPARATOR_REGEX);
+	public CommandParameters(String command) {
+		String[] commandParams = command.split(SEPARATOR_REGEX);
 		this.command = Command.get(commandParams[0]);
 		if (commandParams.length > 1) {
 			parameters = Arrays.copyOfRange(commandParams, 1, commandParams.length);
