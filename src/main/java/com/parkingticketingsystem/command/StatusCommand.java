@@ -23,7 +23,7 @@ public class StatusCommand extends AbstractCommand {
 
 	@Override
 	protected String name() {
-		return "Status command";
+		return "status command";
 	}
 
 }
