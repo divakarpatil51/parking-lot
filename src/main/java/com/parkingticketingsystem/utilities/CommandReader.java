@@ -23,7 +23,7 @@ public class CommandReader {
 		try {
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(pathname))));
 		} catch (FileNotFoundException e) {
-			throw new IllegalArgumentException("Please provide valid arguments.");
+			throw new IllegalArgumentException("Please provide valid arguments." + e.getMessage());
 		}
 	}
 

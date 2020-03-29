@@ -17,11 +17,10 @@ public class AutomatedTicketingSystemTest {
 	 */
 	@Test
 	public void testValidInputFile() {
-		String fileName = this.getClass().getResource("/parking_lot_file_inputs_valid.txt")
-				.getFile();
+		String fileName = AutomatedTicketingSystemTest.class.getClass()
+				.getResource("/parking_lot_file_inputs_valid.txt").getFile();
 		AutomatedTicketingSystem.main(new String[] { fileName });
 	}
-
 
 	/**
 	 * Tests the app behavior in case of invalid parameters passed at runtime.
