@@ -17,7 +17,7 @@ public class AutomatedTicketingSystemTest {
 	 */
 	@Test
 	public void testValidInputFile() {
-		String fileName = AutomatedTicketingSystemTest.this.getClass().getResource("/parking_lot_file_inputs.txt")
+		String fileName = AutomatedTicketingSystemTest.this.getClass().getResource("/parking_lot_file_inputs_valid.txt")
 				.getFile();
 		AutomatedTicketingSystem.main(new String[] { fileName });
 	}
